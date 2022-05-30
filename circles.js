@@ -14,9 +14,19 @@ class RGB {
   }
 }
 
-const randomInt = limit => Math.round(Math.random() * limit);
+class Style {
+  constructor() {
+    this.styles = [];
+  }
 
-const createAttribute = (attribute, value) => attribute + ': ' + value;
+  addAttribute = (attribute, value) => {
+    this.styles.push(attribute + ': ' + value);
+  }
+
+  toHtml = () => this.styles.join(';')
+}
+
+const randomInt = limit => Math.round(Math.random() * limit);
 
 const randomColour = () => [randomInt(255), randomInt(255), randomInt(255)];
 
@@ -30,19 +40,21 @@ class Circle {
   toHtml() {
     const dia = this.radius * 2;
     const colour = new RGB(...randomColour());
-    const bg = createAttribute('background-color', colour.toHexa());
-    const height = createAttribute('height', dia + 'px');
-    const width = createAttribute('width', dia + 'px');
-    const border = createAttribute('border-radius', '50%');
-    const position = createAttribute('position', 'absolute');
-    const top = createAttribute('top', this.y + 'px');
-    const left = createAttribute('left', this.x + 'px');
-    return `<div style="${bg}; ${height}; ${width}; ${border}; ${position}; ${top}; ${left} "></div>`
+    const style = new Style;
+    style.addAttribute('background-color', colour.toHexa());
+    style.addAttribute('height', dia + 'px');
+    style.addAttribute('width', dia + 'px');
+    style.addAttribute('border-radius', '50%');
+    style.addAttribute('position', 'absolute');
+    style.addAttribute('top', this.y + 'px');
+    style.addAttribute('left', this.x + 'px');
+
+    return `<div style="${style.toHtml()}"></div>`
   }
 }
 
 
-const circles = Array(1000).fill(0).map(() => {
+const circles = Array(500).fill(0).map(() => {
   const circle = new Circle(randomInt(1750), randomInt(1000), randomInt(5));
   return circle.toHtml();
 }).join('');
