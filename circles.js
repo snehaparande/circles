@@ -14,7 +14,11 @@ class RGB {
   }
 }
 
-const randomInt = (limit) => Math.round(Math.random() * limit);
+const randomInt = limit => Math.round(Math.random() * limit);
+
+const createAttribute = (attribute, value) => attribute + ': ' + value;
+
+const randomColour = () => [randomInt(255), randomInt(255), randomInt(255)];
 
 class Circle {
   constructor(x, y, radius) {
@@ -25,14 +29,14 @@ class Circle {
 
   toHtml() {
     const dia = this.radius * 2;
-    const color = new RGB(randomInt(255), randomInt(255), randomInt(255));
-    const bg = `background-color: ${color.toHexa()}`;
-    const height = `height: ${dia}`;
-    const width = `width: ${dia}`;
-    const border = 'border-radius: 50%';
-    const position = 'position: absolute';
-    const top = `top: ${this.y}`;
-    const left = `left: ${this.x}`;
+    const colour = new RGB(...randomColour());
+    const bg = createAttribute('background-color', colour.toHexa());
+    const height = createAttribute('height', dia + 'px');
+    const width = createAttribute('width', dia + 'px');
+    const border = createAttribute('border-radius', '50%');
+    const position = createAttribute('position', 'absolute');
+    const top = createAttribute('top', this.y + 'px');
+    const left = createAttribute('left', this.x + 'px');
     return `<div style="${bg}; ${height}; ${width}; ${border}; ${position}; ${top}; ${left} "></div>`
   }
 }
